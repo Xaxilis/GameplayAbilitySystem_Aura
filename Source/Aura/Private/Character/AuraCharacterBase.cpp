@@ -1,7 +1,7 @@
 // Copyright Cloudtreader Studios
 
 
-#include "AuraCharacterBase.h"
+#include "Character/AuraCharacterBase.h"
 
 // Sets default values
 AAuraCharacterBase::AAuraCharacterBase()
