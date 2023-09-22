@@ -34,10 +34,10 @@ void AAuraPlayerController::CursorTrace()
 	*	- Do nothing.
 	* B. LastActor is null && ThisActor is valid
 	*	- Highlight ThisActor
-	* C. LastActor is Valid && ThisActor is Valid
+	* C. LastActor is Valid && ThisActor is null
 	*	- UnHighlight LastActor
-	* D. Both actors are valid, but LasActor is != ThisActor
-	*	-UnHightlight LastActor, and Highlight ThisActor
+	* D. Both actors are valid, but LastActor is != ThisActor
+	*	-UnHighlight LastActor, and Highlight ThisActor
 	* E. Both actors are valid, and are the same actor
 	*	- Do Nothing
 	*/
@@ -50,10 +50,10 @@ void AAuraPlayerController::CursorTrace()
 		}
 		else
 		{
-			// Case A - both ar null, do nothing
+			// Case A - both are null, do nothing
 		}
 	}
-	else // LastActor is Valid
+	else // LastActor is valid
 	{
 		if (ThisActor == nullptr)
 		{
@@ -83,8 +83,11 @@ void AAuraPlayerController::BeginPlay()
 	check(AuraContext);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsystem);
-	Subsystem->AddMappingContext(AuraContext, 0);
+	if (Subsystem)
+	{
+		Subsystem->AddMappingContext(AuraContext, 0);
+	}
+	
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -106,7 +109,7 @@ void AAuraPlayerController::SetupInputComponent()
 
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 {
-	const FVector2D InputAxisVector = InputActionValue.Get<FVector2d>();
+	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
 
